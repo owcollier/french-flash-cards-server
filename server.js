@@ -19,6 +19,7 @@ const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
+// console.log('HERE',DATABASE_URL);
 
 const app = express();
 
@@ -68,6 +69,7 @@ function runServer() {
       server = app
         .listen(PORT, () => {
           console.log(`Your app is listening on port ${PORT}`);
+          console.log('HERE',DATABASE_URL);
           resolve();
         })
         .on('error', err => {
