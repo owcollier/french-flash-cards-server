@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 
 // Here we use destructuring assignment with renaming so the two variables
 // called router (from ./users and ./auth) have different names
@@ -25,6 +26,7 @@ const app = express();
 
 // Logging
 app.use(morgan('common'));
+app.use(bodyParser.json());
 
 // CORS
 app.use(function (req, res, next) {
