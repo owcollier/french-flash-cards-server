@@ -25,17 +25,19 @@ const userSchema = mongoose.Schema({
   }
 });
 
-userSchema.methods.serialize = () => ({
-  userName: this.userName || '',
-  firstName: this.firstName || '',
-  lastName: this.lastName || ''
-});
+userSchema.methods.serialize = function() {
+  return {
+    username: this.userName || '',
+    firstName: this.firstName || '',
+    lastName: this.lastName || ''
+  };
+};
 
-userSchema.methods.validatePassword = (password) => {
+userSchema.methods.validatePassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.hashPassword = (password) => {
+userSchema.statics.hashPassword = function(password) {
   return bcrypt.hash(password, 10);
 };
 

@@ -4,8 +4,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { User } = require('./models');
 const router = express.Router();
+const jsonParser = bodyParser.json();
 
-router.post('/', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -95,6 +96,14 @@ router.post('/', (req, res) => {
       }
       return User.hashPassword(password);
     })
+    .then(hash => {
+      return User.create({
+        userName: username,
+        password: hash,
+        firstName,
+        lastName
+      });
+    })
     .then(user => {
       return res.status(201).json(user.serialize());
     })
@@ -112,8 +121,8 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
   return User.find()
     .then(users => {
-      res.json(users.map(user => {
-        user.serialize();
+      return res.json(users.map(user => {
+        return user.serialize();
       }));
     })
     .catch(err => {
