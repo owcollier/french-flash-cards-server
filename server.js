@@ -39,6 +39,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
