@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { User } = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
-const { Questions } = require('../questions')
+const { Questions } = require('../questions');
 
 router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
@@ -106,19 +106,19 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(user => Questions.find()
-    .then(questions => (
+      .then(questions => (
         {user, questions}
-    )))
+      )))
     .then(({user, questions}) => {
       // console.log(user, questions)
       user.questions = questions.map((question, index) => ({
         _id: question._id, 
         question: question.question,
         answer: question.answer,
-        memoryStregnth: 1,
+        memoryStrength: 1,
         next: index === questions.length - 1 ? null : index + 1
-      }))
-      return user.save()
+      }));
+      return user.save();
     })
     .then(user => {
       return res.status(201).json(user.serialize());
