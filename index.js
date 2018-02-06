@@ -6,20 +6,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
-// Here we use destructuring assignment with renaming so the two variables
-// called router (from ./users and ./auth) have different names
-// For example:
-// const actorSurnames = { james: "Stewart", robert: "De Niro" };
-// const { james: jimmy, robert: bobby } = actorSurnames;
-// console.log(jimmy); // Stewart - the variable name is jimmy, not james
-// console.log(bobby); // De Niro - the variable name is bobby, not robert
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 mongoose.Promise = global.Promise;
 
-const { PORT, DATABASE_URL } = require('./config');
+const { CLIENT_ORIGIN, PORT, DATABASE_URL } = require('./config');
 // console.log('HERE',DATABASE_URL);
 
 const app = express();
@@ -29,6 +23,11 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 
 // CORS
+
+app.use(cors({
+  origin: CLIENT_ORIGIN
+}));
+
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
