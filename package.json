@@ -2,7 +2,7 @@
   "name": "thinkful-backend-template",
   "version": "1.0.0",
   "description": "Template for an Express backend",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
     "test": "mocha",
