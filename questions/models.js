@@ -14,11 +14,6 @@ const questionSchema = mongoose.Schema({
     }
 })
 
-questionSchema.methods.serialize = () => ({
-    question: this.question || '',
-    answer: this.answer || '',
-})
-
-const Questions = mongoose.model('Questions', questionSchema)
+const Questions = mongoose.model('Question', questionSchema)
 
 module.exports = { Questions }

@@ -93,4 +93,14 @@ router.get('/', jwtAuth, (req, res) => {
         })
 })
 
+router.get('/next', passport.authenticate('jwt', { session: false }), (req, res) => {
+    User.findOne({
+        username: req.user.username
+    }).then(user =>
+        res.json(
+            user.questions[user.head]
+        ));
+    }
+);
+
 module.exports = { router }

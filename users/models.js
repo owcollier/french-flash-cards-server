@@ -33,11 +33,11 @@ const userSchema = mongoose.Schema({
       memoryStrength: Number,
       next: Number
     }
-  ]
-  // head: {
-  //   type: Number,
-  //   default: 0
-  // }
+  ],
+  head: {
+    type: Number,
+    default: 0
+  }
 });
 
 userSchema.methods.serialize = function() {
