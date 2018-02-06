@@ -22,7 +22,9 @@ const userSchema = mongoose.Schema({
   lastName: {
     type: String,
     default: ''
-  }
+  },
+  //create another object or an array of questions(objects)
+  //pull the questions from the get endpoint and put them here 
 });
 
 userSchema.methods.serialize = function() {
