@@ -3,6 +3,9 @@ const bodyParser = require('body-parser')
 const { Questions } = require('./models')
 const router = express.Router()
 const jsonParser = bodyParser.json()
+const passport = require('passport');
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['question', 'answer']
@@ -76,7 +79,7 @@ router.post('/', jsonParser, (req, res) => {
         })
 })
 
-router.get('/', (req, res) => {
+router.get('/', jwtAuth, (req, res) => {
     // console.log('here')
     return Questions.find()
         .then(questions => {
