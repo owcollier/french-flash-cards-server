@@ -83,7 +83,7 @@ router.get('/', jwtAuth, (req, res) => {
     // console.log('here')
     return Questions.find()
         .then(questions => {
-            console.log(questions)
+            // console.log(questions)
             res.json(questions)
         })
         .catch(err => {
