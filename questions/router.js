@@ -83,22 +83,102 @@ router.post('/', jsonParser, (req, res) => {
 });
 
 router.post('/submit', jwtAuth, (req, res) => {
-  //in the req body sending the word in the user document 
-  //and sending along the answer the user provided 
-  //if you isCorrect is true then change the n value 
 
   User.findOne({
     userName: req.user.username
   }).then(user => {
     console.log(user)
-    let answeredQuestion = user.questions[user.head]
+    const answeredQuestion = user.questions[user.head]
     req.body.isCorrect ? answeredQuestion.memoryStrength *= 2 : answeredQuestion.memoryStrength = 1;
+    const prevHead = user.head
     user.head = answeredQuestion.next
-    for(let i=0; i<memoryStrength; i++){
-      
+    let tempNode = user.questions[prevHead]
+    for (let i = 0; i < answeredQuestion.memoryStrength; i++) {
+      tempNode = user.questions[tempNode.next]
     }
+    answeredQuestion.next = tempNode.next
+    tempNode.next = prevHead
+    console.log(user)
+    return user.save()
+  }).then(() => {
+    return res.status(201)
+  }).catch(err => {
+    if(err.reason === 'ValidationError'){
+      return res.status(err.code.json(err))
+    }
+    return res.status(500).json({
+      message: 'Internal Server Error'
+    })
   })
 })
+
+// "head": 1, 
+//  "questions": [
+//   {
+//     "_id":
+//     { "$oid": "5a79e116734d1d0828bd3808" },
+//     "question": "Bonjour",
+//     "answer": "Hello",
+//     "memoryStrength": 2,
+//     "next": 1
+//   },
+//   {
+//     "_id":
+//     { "$oid": "5a79e185734d1d0828bd3847" },
+//     "question": "Au revoir",
+//     "answer": "Goodbye",
+//     "memoryStrength": 1,
+//     "next": 2
+//   },
+//   {
+//     "_id":
+//     { "$oid": "5a79e21c734d1d0828bd38ac" },
+//     "question": "Merci",
+//     "answer": "Thank you",
+//     "memoryStrength": 1,
+//     "next": 3
+//   },
+//   {
+//     "_id":
+//     { "$oid": "5a79e249734d1d0828bd38c0" },
+//     "question": "Oui",
+//     "answer": "Yes",
+//     "memoryStrength": 1,
+//     "next": null
+//   }
+// ]
+
+
+router.get('/next', jwtAuth, (req, res) => {
+  User.findOne({
+    userName: req.user.username
+  }).then(user =>
+    res.json(
+      user.questions[user.head]
+    ));
+}
+);
+
+module.exports = { router };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // router.get('/', jwtAuth, (req, res) => {
 //   // console.log('here')
@@ -113,15 +193,3 @@ router.post('/submit', jwtAuth, (req, res) => {
 //       });
 //     });
 // });
-
-router.get('/next', jwtAuth, (req, res) => {
-  User.findOne({
-    userName: req.user.username
-  }).then(user =>
-    res.json(
-      user.questions[user.head]
-    ));
-}
-);
-
-module.exports = { router };
