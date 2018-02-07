@@ -94,6 +94,9 @@ router.post('/submit', jwtAuth, (req, res) => {
     user.head = answeredQuestion.next;
     let tempNode = user.questions[prevHead];
     for (let i = 0; i < answeredQuestion.memoryStrength; i++) {
+      if (tempNode.next === null) {
+        break;
+      }
       tempNode = user.questions[tempNode.next];
     }
     answeredQuestion.next = tempNode.next;
