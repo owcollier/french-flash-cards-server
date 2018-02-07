@@ -100,8 +100,8 @@ router.post('/submit', jwtAuth, (req, res) => {
     tempNode.next = prevHead
     console.log(user)
     return user.save()
-  }).then(() => {
-    return res.status(201)
+  }).then(user => {
+    return res.status(201).json(user)
   }).catch(err => {
     if(err.reason === 'ValidationError'){
       return res.status(err.code.json(err))
