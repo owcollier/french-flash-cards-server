@@ -82,21 +82,39 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-router.get('/', jwtAuth, (req, res) => {
-  // console.log('here')
-  return Questions.find()
-    .then(questions => {
-      // console.log(questions)
-      res.json(questions);
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: 'Internal Server Error'
-      });
-    });
-});
+router.post('/submit', jwtAuth, (req, res) => {
+  //in the req body sending the word in the user document 
+  //and sending along the answer the user provided 
+  //if you isCorrect is true then change the n value 
 
-router.get('/next', passport.authenticate('jwt', { session: false }), (req, res) => {
+  User.findOne({
+    userName: req.user.username
+  }).then(user => {
+    console.log(user)
+    let answeredQuestion = user.questions[user.head]
+    req.body.isCorrect ? answeredQuestion.memoryStrength *= 2 : answeredQuestion.memoryStrength = 1;
+    user.head = answeredQuestion.next
+    for(let i=0; i<memoryStrength; i++){
+      
+    }
+  })
+})
+
+// router.get('/', jwtAuth, (req, res) => {
+//   // console.log('here')
+//   return Questions.find()
+//     .then(questions => {
+//       // console.log(questions)
+//       res.json(questions);
+//     })
+//     .catch(err => {
+//       res.status(500).json({
+//         message: 'Internal Server Error'
+//       });
+//     });
+// });
+
+router.get('/next', jwtAuth, (req, res) => {
   User.findOne({
     userName: req.user.username
   }).then(user =>
