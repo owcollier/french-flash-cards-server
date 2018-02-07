@@ -90,7 +90,7 @@ router.post('/submit', jwtAuth, (req, res) => {
     console.log(user)
     const answeredQuestion = user.questions[user.head]
     if (req.body.isCorrect) {
-      score += 1;
+      user.score += 1;
       answeredQuestion.memoryStrength *= 2;
     } else {
       answeredQuestion.memoryStrength = 1;
