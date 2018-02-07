@@ -87,17 +87,28 @@ router.post('/submit', jwtAuth, (req, res) => {
   User.findOne({
     userName: req.user.username
   }).then(user => {
+<<<<<<< HEAD
     console.log(user)
     const answeredQuestion = user.questions[user.head]
+=======
+    console.log(user);
+    const answeredQuestion = user.questions[user.head];
+>>>>>>> 5054fa2ddfd807806f3ff8828af3006f1b29c4f8
     if (req.body.isCorrect) {
       user.score += 1;
       answeredQuestion.memoryStrength *= 2;
     } else {
       answeredQuestion.memoryStrength = 1;
     }
+<<<<<<< HEAD
     const prevHead = user.head
     user.head = answeredQuestion.next
     let tempNode = user.questions[prevHead]
+=======
+    const prevHead = user.head;
+    user.head = answeredQuestion.next;
+    let tempNode = user.questions[prevHead];
+>>>>>>> 5054fa2ddfd807806f3ff8828af3006f1b29c4f8
     for (let i = 0; i < answeredQuestion.memoryStrength; i++) {
       if (tempNode.next === null) {
         break;
