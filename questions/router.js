@@ -87,6 +87,7 @@ router.post('/submit', jwtAuth, (req, res) => {
   User.findOne({
     userName: req.user.username
   }).then(user => {
+<<<<<<< HEAD
     console.log(user)
     const answeredQuestion = user.questions[user.head]
     if (req.body.isCorrect) {
@@ -98,24 +99,32 @@ router.post('/submit', jwtAuth, (req, res) => {
     const prevHead = user.head
     user.head = answeredQuestion.next
     let tempNode = user.questions[prevHead]
+=======
+    console.log(user);
+    const answeredQuestion = user.questions[user.head];
+    req.body.isCorrect ? answeredQuestion.memoryStrength *= 2 : answeredQuestion.memoryStrength = 1;
+    const prevHead = user.head;
+    user.head = answeredQuestion.next;
+    let tempNode = user.questions[prevHead];
+>>>>>>> 21f774656ec661eb43b07730a89d0591ed4e9964
     for (let i = 0; i < answeredQuestion.memoryStrength; i++) {
-      tempNode = user.questions[tempNode.next]
+      tempNode = user.questions[tempNode.next];
     }
-    answeredQuestion.next = tempNode.next
-    tempNode.next = prevHead
-    console.log(user)
-    return user.save()
+    answeredQuestion.next = tempNode.next;
+    tempNode.next = prevHead;
+    console.log(user);
+    return user.save();
   }).then(user => {
-    return res.status(201).json(user)
+    return res.status(201).json(user);
   }).catch(err => {
     if(err.reason === 'ValidationError'){
-      return res.status(err.code.json(err))
+      return res.status(err.code.json(err));
     }
     return res.status(500).json({
       message: 'Internal Server Error'
-    })
-  })
-})
+    });
+  });
+});
 
 // "head": 1, 
 //  "questions": [
