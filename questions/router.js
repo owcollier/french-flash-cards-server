@@ -89,7 +89,12 @@ router.post('/submit', jwtAuth, (req, res) => {
   }).then(user => {
     console.log(user)
     const answeredQuestion = user.questions[user.head]
-    req.body.isCorrect ? answeredQuestion.memoryStrength *= 2 : answeredQuestion.memoryStrength = 1;
+    if (req.body.isCorrect) {
+      score += 1;
+      answeredQuestion.memoryStrength *= 2;
+    } else {
+      answeredQuestion.memoryStrength = 1;
+    }
     const prevHead = user.head
     user.head = answeredQuestion.next
     let tempNode = user.questions[prevHead]

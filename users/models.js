@@ -37,6 +37,10 @@ const userSchema = mongoose.Schema({
   head: {
     type: Number,
     default: 0
+  }, 
+  score: {
+    type: Number,
+    default: 0
   }
 });
 
@@ -44,7 +48,8 @@ userSchema.methods.serialize = function() {
   return {
     username: this.userName || '',
     firstName: this.firstName || '',
-    lastName: this.lastName || ''
+    lastName: this.lastName || '',
+    score: this.score || ''
   };
 };
 
