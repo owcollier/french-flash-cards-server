@@ -166,10 +166,16 @@ router.get('/next', jwtAuth, (req, res) => {
       answer: user.questions[user.head].answer,
       head: user.head + 1,
       score: user.score
-    }
-    ));
-}
-);
+    })
+    ).catch(err => {
+      if(err.reason === 'ValidationError'){
+        return res.status(err.code.json(err));
+      }
+      return res.status(500).json({
+        message: 'Internal Server Error'
+      });
+    });
+});
 
 module.exports = { router };
 
