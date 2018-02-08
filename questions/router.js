@@ -161,8 +161,11 @@ router.get('/next', jwtAuth, (req, res) => {
   User.findOne({
     userName: req.user.username
   }).then(user =>
-    res.json(
-      user.questions[user.head]
+    res.json({
+      question: user.questions[user.head].question,
+      answer: user.questions[user.head].answer,
+      score: user.score
+    }
     ));
 }
 );
