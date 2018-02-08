@@ -120,43 +120,6 @@ router.post('/submit', jwtAuth, (req, res) => {
   });
 });
 
-// "head": 1, 
-//  "questions": [
-//   {
-//     "_id":
-//     { "$oid": "5a79e116734d1d0828bd3808" },
-//     "question": "Bonjour",
-//     "answer": "Hello",
-//     "memoryStrength": 2,
-//     "next": 1
-//   },
-//   {
-//     "_id":
-//     { "$oid": "5a79e185734d1d0828bd3847" },
-//     "question": "Au revoir",
-//     "answer": "Goodbye",
-//     "memoryStrength": 1,
-//     "next": 2
-//   },
-//   {
-//     "_id":
-//     { "$oid": "5a79e21c734d1d0828bd38ac" },
-//     "question": "Merci",
-//     "answer": "Thank you",
-//     "memoryStrength": 1,
-//     "next": 3
-//   },
-//   {
-//     "_id":
-//     { "$oid": "5a79e249734d1d0828bd38c0" },
-//     "question": "Oui",
-//     "answer": "Yes",
-//     "memoryStrength": 1,
-//     "next": null
-//   }
-// ]
-
-
 router.get('/next', jwtAuth, (req, res) => {
   User.findOne({
     userName: req.user.username
@@ -164,43 +127,17 @@ router.get('/next', jwtAuth, (req, res) => {
     res.json({
       question: user.questions[user.head].question,
       answer: user.questions[user.head].answer,
+      head: user.head + 1,
       score: user.score
-    }
-    ));
-}
-);
+    })
+    ).catch(err => {
+      if(err.reason === 'ValidationError'){
+        return res.status(err.code.json(err));
+      }
+      return res.status(500).json({
+        message: 'Internal Server Error'
+      });
+    });
+});
 
 module.exports = { router };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// router.get('/', jwtAuth, (req, res) => {
-//   // console.log('here')
-//   return Questions.find()
-//     .then(questions => {
-//       // console.log(questions)
-//       res.json(questions);
-//     })
-//     .catch(err => {
-//       res.status(500).json({
-//         message: 'Internal Server Error'
-//       });
-//     });
-// });
