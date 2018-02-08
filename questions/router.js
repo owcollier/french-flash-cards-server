@@ -164,6 +164,7 @@ router.get('/next', jwtAuth, (req, res) => {
     res.json({
       question: user.questions[user.head].question,
       answer: user.questions[user.head].answer,
+      head: user.head + 1,
       score: user.score
     }
     ));
